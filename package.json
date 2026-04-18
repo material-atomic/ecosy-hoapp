@@ -1,0 +1,106 @@
+{
+  "name": "@ecosy/hoapp",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "repository": "git@github.com:material-atomic/ecosy-hoapp.git",
+  "author": "Canh Nguyen Van <ngvcanh2014@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c",
+    "lint": "eslint . --fix",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "files": [
+    "dist",
+    "agents"
+  ],
+  "agents": {
+    "prompts": {
+      "hoapp": "$this://agents/PROMPT.md"
+    },
+    "skills": {
+      "$overview": "$this://agents/skills/index.md",
+      "hoapp-init-root-app": "$this://agents/skills/hoapp-init-root-app/SKILL.md",
+      "hoapp-init-domain-app": "$this://agents/skills/hoapp-init-domain-app/SKILL.md",
+      "hoapp-init-route": "$this://agents/skills/hoapp-init-route/SKILL.md",
+      "hoapp-route-response-error": "$this://agents/skills/hoapp-route-response-error/SKILL.md",
+      "hoapp-route-response-data": "$this://agents/skills/hoapp-route-response-data/SKILL.md",
+      "hoapp-middleware": "$this://agents/skills/hoapp-middleware/SKILL.md",
+      "hoapp-auth": "$this://agents/skills/hoapp-auth/SKILL.md",
+      "hoapp-create-descriptor": "$this://agents/skills/hoapp-create-descriptor/SKILL.md"
+    },
+    "workflows": [
+      "prompts.hoapp",
+      "skills.hoapp-init-root-app",
+      "skills.hoapp-init-domain-app",
+      "skills.hoapp-init-route",
+      "skills.hoapp-route-response-error",
+      "skills.hoapp-route-response-data",
+      "skills.hoapp-middleware",
+      "skills.hoapp-auth",
+      "skills.hoapp-create-descriptor"
+    ],
+    "examples": {
+      "project": {
+        "repository": "github.com:material-atomic/ecosy-hoapp/main/examples/hoapp-demo",
+        "url": "https://hoapp-demo.ecosy.io"
+      }
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@rollup/plugin-terser": "^1.0.0",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/node": "^25.6.0",
+    "@typescript-eslint/eslint-plugin": "^8.58.2",
+    "@typescript-eslint/parser": "^8.58.2",
+    "eslint": "^10.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "glob": "^13.0.6",
+    "hono": "^4.12.14",
+    "prettier": "^3.8.3",
+    "rollup": "^4.60.1",
+    "tslib": "^2.8.1",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.4"
+  },
+  "peerDependencies": {
+    "hono": "^4.12.14"
+  },
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./swagger": {
+      "source": "./src/swagger/index.ts",
+      "types": "./dist/swagger/index.d.ts",
+      "import": "./dist/swagger/index.mjs",
+      "require": "./dist/swagger/index.js"
+    },
+    "./swagger-ui": {
+      "source": "./src/swagger-ui/index.ts",
+      "types": "./dist/swagger-ui/index.d.ts",
+      "import": "./dist/swagger-ui/index.mjs",
+      "require": "./dist/swagger-ui/index.js"
+    },
+    "./utils": {
+      "source": "./src/utils/index.ts",
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.mjs",
+      "require": "./dist/utils/index.js"
+    },
+    "./auth": {
+      "source": "./src/auth.ts",
+      "types": "./dist/auth.d.ts",
+      "import": "./dist/auth.mjs",
+      "require": "./dist/auth.js"
+    }
+  }
+}
