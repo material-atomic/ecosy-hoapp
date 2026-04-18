@@ -5,6 +5,15 @@ All notable changes to the `@ecosy/hoapp` package will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - Generic Router and Swagger Binding Propagation
+
+This release significantly hardens the rigid type-safety bounds between HoApp modules by ensuring deeply nested generics correctly trickle down through parent instances, effectively bypassing strict `Contravariance` typescript constraints.
+
+### 🌟 Features / Fixes
+- **Strict Generic Routing Engine (`ContextBindings`)**: Fixed a core Router definition preventing child routers (e.g. `Router<string, ContextBindings>`) from correctly being appended via `.add(...)`. Framework now delegates `B extends Bindings` recursively down children sets (`Set<Router<string, B>>`).
+- **Swagger Generic Options**: Refactored the generic context mappings for the injected Swagger interface exposing a new pattern `new Swagger<ContextBindings>` to mirror standard system environments to UI.
+- **Standalone Compile Target**: Abstracted away root monorepo TS dependencies by introducing an independent typescript configurations `moduleResolution: Bundler` optimizing nested local resolution inside external modules.
+
 ## [0.1.0] - Initial Production-Ready Engine Release
 
 This release solidifies the architectural foundation of the `@ecosy/hoapp` Edge Router, integrating strict types, OpenAPI compatibility, and fully covered validation logic.
