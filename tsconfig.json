@@ -1,11 +1,16 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "outDir": "dist",
     "rootDir": "src",
     "declaration": true,
     "declarationDir": "dist",
-    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["ESNext", "DOM"]
   },

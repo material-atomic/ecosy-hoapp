@@ -1,9 +1,9 @@
 import type { Context, Next } from "hono";
 import type { Freezable, LiteralObject } from "./built-in";
 
-export type Bindings = {};
+export type Bindings = LiteralObject;
 
-export type Variables = {};
+export type Variables = LiteralObject;
 
 export interface RouterBinding<B extends Bindings = Bindings, V extends Variables = Variables> {
   Bindings: B;

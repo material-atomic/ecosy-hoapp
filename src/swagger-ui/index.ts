@@ -164,7 +164,9 @@ ui.btnSend.onclick = async () => {
 init();
 `;
 
-export class Swagger {
+import type { Bindings } from "../types/router";
+
+export class Swagger<B extends Bindings = Bindings> {
   private registry: SwaggerRegistry;
   private options: SwaggerOptions;
 
@@ -176,8 +178,8 @@ export class Swagger {
     Router.registry(this.registry);
   }
 
-  getRouter() {
-    const uiRouter = new Router(this.options.base);
+  getRouter(): Router<string, B> {
+    const uiRouter = new Router<string, B>(this.options.base);
     
     // 1. Phục vụ CSS
     uiRouter.get(

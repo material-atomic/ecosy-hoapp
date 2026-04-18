@@ -35,7 +35,7 @@ export class Router<Base extends string = string, B extends Bindings = Bindings>
   static registries = new Set<RouterRegistryLike>();
   private routes = new Map<string, Map<string, DescriptorLike>>();
   private middlewares = new Map<string, Map<string, DescriptorLike>>();
-  private childRouters = new Set<Router>();
+  private childRouters = new Set<Router<string, B>>();
   private readonly config: RouterOptions<B>;
 
   private static parseOptions<B extends Bindings>(options?: string | RouterOptions<B>): RouterOptions<B> {
@@ -143,7 +143,7 @@ export class Router<Base extends string = string, B extends Bindings = Bindings>
     return this;
   }
 
-  add(...routers: Router[]) {
+  add(...routers: Router<string, B>[]) {
     for (const router of routers) {
       this.childRouters.add(router);
     }
@@ -221,7 +221,7 @@ export class Router<Base extends string = string, B extends Bindings = Bindings>
 
   static add<B extends Bindings = Bindings>(
     app: Hono<RouterBinding<B>>,
-    ...routers: Router[]
+    ...routers: Router<string, B>[]
   ) {
     for (const router of routers) {
       const base = router.base ?? "/";
