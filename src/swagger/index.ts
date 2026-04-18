@@ -73,7 +73,7 @@ export class SwaggerRegistry implements RouterRegistryLike {
 }
 
 export interface SwaggerOptions extends SwaggerConfig {
-  base: string; // Tên miền gốc để mount (vd: '/docs')
+  jsonUrl?: string; // Target URL for JSON, defaults to '/json' if not using a custom descriptor
 }
 
 export class Swagger<B extends Bindings = Bindings> {
@@ -84,16 +84,22 @@ export class Swagger<B extends Bindings = Bindings> {
   constructor(options: SwaggerOptions) {
     this.options = options;
     this.registry = new SwaggerRegistry(options);
-    this.router = new Router<string, B>(options.base);
+    this.router = new Router<string, B>("");
     
     // Auto-inject this instance into the Global Router DIP
     Router.registry(this.registry);
 
-    // Natively only serve the JSON Specs
+    // Natively only serve the JSON Specs via explicit url or default fallback
+    const jsonUrl = options.jsonUrl || '/json';
     this.router.get(
-      Descriptor({ url: '/json', summary: 'Swagger JSON Specs', tags: ['Swagger Specs'] })
+      Descriptor({ url: jsonUrl, summary: 'Swagger JSON Specs', tags: ['Swagger Specs'] })
         .use((c: Context) => c.json(this.registry.getOpenApiJson()))
     );
+  }
+
+  getJsonDescriptor(url: string) {
+    return Descriptor({ url, summary: 'Swagger JSON Specs', tags: ['Swagger Specs'] })
+        .use((c: Context) => c.json(this.registry.getOpenApiJson()));
   }
 
   addUI(uiRouter: Router<string, B>): this {

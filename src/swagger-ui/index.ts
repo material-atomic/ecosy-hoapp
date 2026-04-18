@@ -161,8 +161,8 @@ init();
 `;
 
 export class SwaggerUI<B extends Bindings = Bindings> {
-  getRouter(options: SwaggerOptions): Router<string, B> {
-    const uiRouter = new Router<string, B>(""); // Empty base, inherits parent's Swagger base
+  getRouter(options: { base: string; jsonUrl: string; title?: string }): Router<string, B> {
+    const uiRouter = new Router<string, B>(options.base);
     
     // 1. Phục vụ CSS
     uiRouter.get(
@@ -191,13 +191,13 @@ export class SwaggerUI<B extends Bindings = Bindings> {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${options.info.title || "Ecosy API Explorer"}</title>
+  <title>${options.title || "Ecosy API Explorer"}</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="${options.base}/style.css" />
 </head>
 <body>
   <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">${options.info.title || "API Explorer"}</div>
+    <div class="sidebar-header">${options.title || "API Explorer"}</div>
     <ul class="nav-list" id="nav-list">
       <div style="padding: 20px; color: var(--text-muted); font-size: 0.85rem">Loading specifications...</div>
     </ul>
@@ -232,7 +232,7 @@ export class SwaggerUI<B extends Bindings = Bindings> {
 
   <script>
     // Khai báo url JSON cho script.js dùng
-    window.API_JSON_URL = "${options.base}/json";
+    window.API_JSON_URL = "${options.jsonUrl}";
   </script>
   <script type="module" src="${options.base}/script.js"></script>
 </body>
