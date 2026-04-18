@@ -1,7 +1,6 @@
 import { Router } from "../router";
 import { Descriptor } from "../descriptor";
 import type { Context } from "hono";
-import type { SwaggerOptions } from "../swagger";
 import type { Bindings } from "../types/router";
 
 // Bóc tách Style, Script và HTML ra làm 3 file riêng biệt
