@@ -23,7 +23,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "repository": "git@github.com:material-atomic/ecosy-hoapp.git",
-  "author": "Canh Nguyen Van <ngvcanh2014@gmail.com>",
+  "author": "material-atomic",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
