@@ -1,12 +1,8 @@
-import { SwaggerRegistry } from "../swagger";
 import { Router } from "../router";
 import { Descriptor } from "../descriptor";
 import type { Context } from "hono";
-import type { SwaggerConfig } from "../swagger";
-
-export interface SwaggerOptions extends SwaggerConfig {
-  base: string; // Tên miền gốc để mount (vd: '/docs')
-}
+import type { SwaggerOptions } from "../swagger";
+import type { Bindings } from "../types/router";
 
 // Bóc tách Style, Script và HTML ra làm 3 file riêng biệt
 const CSS_CONTENT = `
@@ -164,22 +160,9 @@ ui.btnSend.onclick = async () => {
 init();
 `;
 
-import type { Bindings } from "../types/router";
-
-export class Swagger<B extends Bindings = Bindings> {
-  private registry: SwaggerRegistry;
-  private options: SwaggerOptions;
-
-  constructor(options: SwaggerOptions) {
-    this.options = options;
-    this.registry = new SwaggerRegistry(options);
-    
-    // Auto-inject this instance into the Global Router DIP
-    Router.registry(this.registry);
-  }
-
-  getRouter(): Router<string, B> {
-    const uiRouter = new Router<string, B>(this.options.base);
+export class SwaggerUI<B extends Bindings = Bindings> {
+  getRouter(options: SwaggerOptions): Router<string, B> {
+    const uiRouter = new Router<string, B>(""); // Empty base, inherits parent's Swagger base
     
     // 1. Phục vụ CSS
     uiRouter.get(
@@ -199,15 +182,7 @@ export class Swagger<B extends Bindings = Bindings> {
         })
     );
 
-    // 3. Phục vụ JSON cấu hình OpenAPI
-    uiRouter.get(
-      Descriptor({ url: '/json', summary: 'Swagger JSON Specs', tags: ['Swagger Specs'] })
-        .use((c: Context) => {
-          return c.json(this.registry.getOpenApiJson());
-        })
-    );
-
-    // 4. Phục vụ trang HTML chính
+    // 3. Phục vụ trang HTML chính
     uiRouter.get(
       Descriptor({ url: '/', summary: 'Swagger Explorer', tags: ['Swagger UI'], type: 'html' })
         .use(() => {
@@ -216,13 +191,13 @@ export class Swagger<B extends Bindings = Bindings> {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${this.options.info.title || "Ecosy API Explorer"}</title>
+  <title>${options.info.title || "Ecosy API Explorer"}</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="${this.options.base}/style.css" />
+  <link rel="stylesheet" href="${options.base}/style.css" />
 </head>
 <body>
   <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">${this.options.info.title || "API Explorer"}</div>
+    <div class="sidebar-header">${options.info.title || "API Explorer"}</div>
     <ul class="nav-list" id="nav-list">
       <div style="padding: 20px; color: var(--text-muted); font-size: 0.85rem">Loading specifications...</div>
     </ul>
@@ -257,9 +232,9 @@ export class Swagger<B extends Bindings = Bindings> {
 
   <script>
     // Khai báo url JSON cho script.js dùng
-    window.API_JSON_URL = "${this.options.base}/json";
+    window.API_JSON_URL = "${options.base}/json";
   </script>
-  <script type="module" src="${this.options.base}/script.js"></script>
+  <script type="module" src="${options.base}/script.js"></script>
 </body>
 </html>`;
         })

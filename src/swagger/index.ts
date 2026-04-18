@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { RouterRegistryLike } from "../router";
-import type { DescriptorLike } from "../descriptor";
+import { Router, type RouterRegistryLike } from "../router";
+import { Descriptor, type DescriptorLike } from "../descriptor";
+import type { Context } from "hono";
+import type { Bindings } from "../types/router";
 
 export interface SwaggerConfig {
   openapi?: string;
@@ -67,5 +69,39 @@ export class SwaggerRegistry implements RouterRegistryLike {
         schemas: {}
       }
     };
+  }
+}
+
+export interface SwaggerOptions extends SwaggerConfig {
+  base: string; // Tên miền gốc để mount (vd: '/docs')
+}
+
+export class Swagger<B extends Bindings = Bindings> {
+  private registry: SwaggerRegistry;
+  public options: SwaggerOptions;
+  private router: Router<string, B>;
+
+  constructor(options: SwaggerOptions) {
+    this.options = options;
+    this.registry = new SwaggerRegistry(options);
+    this.router = new Router<string, B>(options.base);
+    
+    // Auto-inject this instance into the Global Router DIP
+    Router.registry(this.registry);
+
+    // Natively only serve the JSON Specs
+    this.router.get(
+      Descriptor({ url: '/json', summary: 'Swagger JSON Specs', tags: ['Swagger Specs'] })
+        .use((c: Context) => c.json(this.registry.getOpenApiJson()))
+    );
+  }
+
+  addUI(uiRouter: Router<string, B>): this {
+    this.router.add(uiRouter);
+    return this;
+  }
+
+  getRouter(): Router<string, B> {
+    return this.router;
   }
 }
