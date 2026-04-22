@@ -1,0 +1,305 @@
+.root {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+}
+
+.header {
+  height: var(--spacing-7);
+  border-bottom: 1px solid var(--border);
+  padding: 0 var(--spacing-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.versionBadge {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--foreground-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm, 4px);
+}
+
+.segmentControl {
+  display: flex;
+  background-color: var(--surface);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.segmentBtn {
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--radius-sm) - 2px);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--foreground-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--foreground);
+  }
+}
+
+.segmentBtnActive {
+  background-color: var(--border);
+  color: var(--foreground);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Tree View Styles */
+.treeNode {
+  margin-bottom: 2px;
+}
+
+.treeTrigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  color: var(--foreground-muted);
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: var(--surface-hover);
+    color: var(--foreground);
+  }
+
+  &[data-state="open"] .treeChevron {
+    transform: rotate(180deg);
+  }
+}
+
+.methodText {
+  display: inline-block;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  min-width: 44px; /* Align beautifully with badges */
+  
+  &[data-method="get"] { color: #3b82f6; }
+  &[data-method="post"] { color: #10b981; }
+  &[data-method="put"] { color: #f59e0b; }
+  &[data-method="delete"] { color: #ef4444; }
+  &[data-method="patch"] { color: #8b5cf6; }
+}
+
+.treeChevron {
+  transition: transform 0.2s ease;
+  color: inherit;
+}
+
+.treeNodeName {
+  flex: 1;
+  text-align: left;
+}
+
+.treeContent {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.treeGuideLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--border);
+  z-index: 1;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-4) var(--spacing-2) var(--spacing-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.group {
+  margin-bottom: var(--spacing-6);
+}
+
+.groupTrigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2);
+  border-radius: var(--radius-sm, 4px);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: var(--fs-sm, 0.875rem);
+  color: var(--foreground);
+  transition: background-color 0.15s ease;
+  letter-spacing: 3%;
+
+  &:hover {
+    background-color: var(--surface-hover, rgba(0, 0, 0, 0.05));
+  }
+
+  svg {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &[data-state="open"] svg {
+    transform: rotate(180deg);
+  }
+}
+
+.groupContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing, 4px);
+  padding-left: var(--spacing-4, 8px);
+  margin-top: var(--spacing, 4px);
+}
+
+.apiItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  padding: 0 var(--spacing-2, 8px) 0 0;
+  border-radius: var(--radius-sm, 4px);
+  font-size: var(--fs-sm, 0.875rem);
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-right: 1px solid var(--border);
+  margin-top: var(--spacing-2);
+  position: relative;
+  background: transparent;
+
+  &:hover {
+    background-color: var(--surface-hover, rgba(0, 0, 0, 0.05));
+  }
+
+  &[data-method="get" i] {
+    background: rgba(59, 130, 246, 0.05);
+    border-color: rgba(59, 130, 246, 0.6);
+    &:hover { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.8); }
+  }
+  &[data-method="post" i] {
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.6);
+    &:hover { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.8); }
+  }
+  &[data-method="put" i] {
+    background: rgba(245, 158, 11, 0.05);
+    border-color: rgba(245, 158, 11, 0.6);
+    &:hover { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.8); }
+  }
+  &[data-method="delete" i] {
+    background: rgba(239, 68, 68, 0.05);
+    border-color: rgba(239, 68, 68, 0.6);
+    &:hover { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.8); }
+  }
+  &[data-method="patch" i] {
+    background: rgba(139, 92, 246, 0.05);
+    border-color: rgba(139, 92, 246, 0.6);
+    &:hover { background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.8); }
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    height: calc(1.25 * var(--spacing-2));
+    border-left: 2px solid var(--border);
+    bottom: calc(100% + 2px);
+    left: var(--spacing-8);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    height: calc(1.25 * var(--spacing-2));
+    border-left: 2px solid var(--border);
+    bottom: calc(100% + 2px);
+    right: var(--spacing-8);
+  }
+  
+  &.apiItemFlat {
+    border: none !important;
+    background: transparent !important;
+    padding: var(--spacing-1) 0; // Tweak padding for flat layout
+    margin-top: 0;
+    
+    &::before, &::after {
+      display: none;
+    }
+
+    &:hover {
+      background-color: var(--surface-hover, rgba(0, 0, 0, 0.05)) !important;
+    }
+  }
+}
+
+.apiTarget {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.authIcon {
+  color: var(--foreground-muted);
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.badge {
+  min-width: calc(16 * var(--spacing))!important;
+}
+
+.apiPath {
+  font-family: var(--font-mono, monospace);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.apiSummary {
+  font-size: var(--fs-xs, 0.75rem);
+  color: var(--foreground-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  flex: 1;
+  min-width: 0;
+}
+
+.authIconWrapper {
+  display: inline-flex;
+  align-items: center;
+}

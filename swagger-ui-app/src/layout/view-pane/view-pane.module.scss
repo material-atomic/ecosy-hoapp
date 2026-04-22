@@ -1,0 +1,520 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+  background: var(--background);
+}
+
+.emptyPane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--foreground-muted);
+  font-size: var(--fs-sm);
+  background: var(--surface);
+}
+
+/* Tabs Container */
+.tabsContainer {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-hover, rgba(0, 0, 0, 0.05));
+  height: var(--spacing-7);
+  
+  &::-webkit-scrollbar {
+    height: 0; // Hide scrollbar visually
+  }
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: 0 var(--spacing-3);
+  height: 100%;
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  background: transparent;
+  color: var(--foreground-muted);
+  font-size: var(--fs-sm);
+  min-width: fit-content;
+  border-top: 2px solid transparent; /* reserve space */
+  transition: background-color 0.15s ease;
+  
+  &:hover {
+    background: var(--surface);
+  }
+  
+  &[data-active="true"] {
+    background: var(--background);
+    color: var(--foreground);
+    border-top: 2px solid var(--primary, #3b82f6);
+  }
+}
+
+.tabMethod {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  
+  &[data-method="GET"] { color: #3b82f6; }
+  &[data-method="POST"] { color: #10b981; }
+  &[data-method="PUT"] { color: #f59e0b; }
+  &[data-method="DELETE"] { color: #ef4444; }
+  &[data-method="PATCH"] { color: #8b5cf6; }
+}
+
+.tabPath {
+  font-family: var(--font-mono, monospace);
+  font-weight: 500;
+}
+
+.tabClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: all 0.15s ease;
+  color: var(--foreground-muted);
+  
+  &:hover {
+    background: var(--surface-hover);
+    color: var(--foreground);
+  }
+}
+
+.tab:hover .tabClose {
+  opacity: 1;
+}
+
+.tab[data-active="true"] .tabClose {
+  opacity: 1;
+}
+
+/* Postman Content Placeholder */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-3);
+  flex-shrink: 0;
+}
+
+.bodySplit {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  border-top: 1px solid var(--border);
+  margin: 0 calc(var(--spacing-4) * -1); /* Counteract padding to let divider hit edges */
+}
+
+.leftPane {
+  border-right: 1px solid var(--border);
+  min-width: 0;
+  /* Let section groups handle their own padding to touch borders */
+}
+
+.rightPane {
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* No padding so tabs touch edges */
+}
+
+.configPane {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.responsePane {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+
+.docSection {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-align: left;
+}
+
+.sectionGroup {
+  border-bottom: 1px solid var(--border);
+}
+
+.sectionTrigger {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-4);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--foreground);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  
+  &:hover {
+    background: var(--surface-hover, rgba(0, 0, 0, 0.05));
+  }
+
+  svg {
+    transition: transform 0.15s ease;
+  }
+  
+  &[data-state="closed"] svg {
+    transform: rotate(-90deg);
+  }
+}
+
+.sectionContent {
+  padding: var(--spacing-3) var(--spacing-4) var(--spacing-3) var(--spacing-7);
+}
+
+.docTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 0;
+  margin-bottom: var(--spacing-2);
+}
+
+.docDescription {
+  color: var(--foreground-muted);
+  line-height: 1.5;
+}
+
+.responseCollapsible {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.responseTrigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-2) var(--spacing-3);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: var(--surface-hover, rgba(0, 0, 0, 0.05));
+  }
+
+  svg.triggerIcon {
+    transition: transform 0.15s ease;
+    color: var(--foreground-muted);
+  }
+  
+  &[data-state="closed"] svg.triggerIcon {
+    transform: rotate(-90deg);
+  }
+}
+
+.responseContent {
+  padding: 0 var(--spacing-3) var(--spacing-3) var(--spacing-3);
+}
+
+.docBlock {
+  margin-top: var(--spacing-4);
+}
+
+.mutedText {
+  color: var(--foreground-muted);
+  font-style: italic;
+  font-size: var(--fs-sm);
+}
+
+/* Tabs Form Layout */
+.tabPanel {
+  padding: var(--spacing-4);
+}
+
+.tabTitle {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--foreground);
+  margin-bottom: var(--spacing-3);
+  letter-spacing: 0.05em;
+}
+
+.emptyForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8) 0;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  
+  .mutedText {
+    margin: 0;
+  }
+}
+
+.formTable {
+  width: 100%;
+  border-collapse: collapse;
+  
+  th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--foreground-muted);
+    padding: var(--spacing-2) var(--spacing-3);
+    border-bottom: 2px solid var(--border);
+  }
+  
+  td {
+    padding: var(--spacing-2) 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+}
+
+.keyCell {
+  width: 30%;
+  padding-right: var(--spacing-3) !important;
+}
+
+.valCell {
+  width: 70%;
+}
+
+.paramKey {
+  font-family: var(--font-mono, monospace);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--primary, #3b82f6);
+  background: var(--surface);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  display: inline-block;
+}
+
+.paramInput {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--border);
+  color: var(--foreground);
+  font-family: var(--font-mono, monospace);
+  font-size: var(--fs-sm);
+  padding: var(--spacing-1) 0;
+  outline: none;
+  transition: border-color 0.2s ease;
+  
+  &:focus {
+    border-bottom-color: var(--primary, #3b82f6);
+    border-bottom-style: solid;
+  }
+  
+  &::placeholder {
+    color: var(--foreground-muted);
+    font-style: italic;
+    font-family: var(--font-sans, sans-serif);
+  }
+}
+
+/* Excel-like Query/Headers Table */
+.excelTableWrapper {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.excelTable {
+  width: 100%;
+  border-collapse: collapse;
+  
+  th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--foreground-muted);
+    padding: 6px var(--spacing-3);
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    background: rgba(0,0,0,0.02);
+    
+    &:last-child {
+      border-right: none;
+    }
+  }
+  
+  td {
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    padding: 0; // inputs fill the cell
+    
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.checkCol {
+  width: 40px;
+  text-align: center !important;
+}
+
+.checkCell {
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  background: rgba(0,0,0,0.01);
+}
+
+.actionCol {
+  width: 32px;
+  text-align: center !important;
+}
+
+.actionCell {
+  width: 32px;
+  text-align: center;
+  vertical-align: middle;
+  transition: opacity 0.2s;
+
+  tr:not(:hover) & .removeBtn {
+    opacity: 0;
+  }
+}
+
+.removeBtn {
+  background: transparent;
+  border: none;
+  color: var(--foreground-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--error, #ef4444);
+    background: rgba(239, 68, 68, 0.1);
+  }
+}
+
+.inputCell {
+  position: relative;
+  background: var(--background);
+}
+
+.excelInput {
+  width: 100%;
+  height: 100%;
+  min-height: 32px;
+  border: none;
+  background: transparent;
+  padding: 0 var(--spacing-3);
+  font-family: var(--font-mono, monospace);
+  font-size: var(--fs-sm);
+  color: var(--foreground);
+  outline: none;
+  
+  &:focus {
+    background: var(--surface-hover);
+    box-shadow: inset 0 0 0 1px var(--primary, #3b82f6);
+  }
+
+  &::placeholder {
+    color: var(--foreground-muted);
+    font-family: var(--font-sans, sans-serif);
+  }
+}
+
+.tableFooter {
+  padding: var(--spacing-2);
+  border-top: 1px solid var(--border);
+  background: var(--background);
+}
+
+.addButton {
+  background: transparent;
+  border: none;
+  color: var(--primary, #3b82f6);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  font-family: var(--font-sans, sans-serif);
+
+  &:hover {
+    background: rgba(59, 130, 246, 0.1);
+  }
+}
+
+
+
+.urlBar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--spacing);
+  padding: 0 var(--spacing-2);
+  gap: var(--spacing-3);
+  height: var(--spacing-7);
+}
+
+.methodBadge {
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+
+.urlText {
+  flex: 1;
+  font-family: var(--font-mono, monospace);
+  color: var(--foreground);
+}
+
+.sendButton {
+  /* We will use Button component if available, this is just for custom overrides if needed */
+}

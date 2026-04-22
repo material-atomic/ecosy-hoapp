@@ -29,7 +29,10 @@ export interface DescritorConfigurations<Route extends string = string> {
   status?: ContentfulStatusCode | 205;
   tags?: string[];
   type?: "json" | "html" | "text";
-  responses?: Record<number, any>;
+  responses?: Record<number | string, unknown>;
+  basic?: boolean;
+  bearer?: boolean;
+  examples?: Record<string, unknown>;
 }
 
 export interface DescriptorLike<

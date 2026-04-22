@@ -1,0 +1,103 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+  width: 100%;
+  height: var(--spacing-9);
+  padding: 0 var(--spacing-2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 50;
+  // backdrop-filter: blur(var(--spacing));
+}
+
+.appbarLeft {
+  display: flex;
+  align-items: center;
+}
+
+.anchor {
+  display: flex;
+  gap: var(--spacing-2);
+  padding-left: 0!important;
+}
+
+.selectedURL {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing);
+  font-size: var(--spacing-3);
+}
+
+.appbarRight {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.projectTitle {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--foreground-muted);
+  letter-spacing: 0.02em;
+}
+
+.projectTitleDropdown {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--surface-hover);
+  }
+}
+
+.titleChevron {
+  color: var(--foreground-muted);
+}
+
+.titleDropdownMenu {
+  width: 400px;
+  max-width: 90vw;
+  max-height: 70vh;
+  overflow-y: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 0;
+}
+
+.titleDropdownContent {
+  padding: var(--spacing-4);
+}
+
+.descTitle {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: var(--spacing-3);
+  color: var(--foreground);
+}
+
+.mutedText {
+  color: var(--foreground-muted);
+  font-size: var(--fs-sm);
+}
+
+.versionBadge {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--foreground-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm, 4px);
+  margin-left: var(--spacing-2);
+}

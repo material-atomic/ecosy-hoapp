@@ -1,0 +1,203 @@
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: #e5e4e7;
+  --code-bg: #f4f3ec;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --surface-1: #f9fafb;
+  --surface-2: #f3f4f6;
+  --surface-hover: rgba(0, 0, 0, 0.05);
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  --spacing: 0.25rem;
+  --spacing-2: calc(2 * var(--spacing));
+  --spacing-3: calc(3 * var(--spacing));
+  --spacing-4: calc(4 * var(--spacing));
+  --spacing-5: calc(5 * var(--spacing));
+  --spacing-6: calc(6 * var(--spacing));
+  --spacing-7: calc(7 * var(--spacing));
+  --spacing-8: calc(8 * var(--spacing));
+  --spacing-9: calc(9 * var(--spacing));
+  --spacing-10: calc(10 * var(--spacing));
+
+  --fs: calc(3.5 * var(--spacing));
+  --fs-xs: cacl(2.5 * var(--spacing));
+  --fs-sm: calc(3 * var(--spacing));
+  --fs-md: calc(4 * var(--spacing));
+  --fs-lg: calc(4.5 * var(--spacing));
+  --fs-xl: calc(5 * var(--spacing));
+
+  --g-bg-opacity: 30%;
+  --g-blur: var(--spacing);
+
+  font-family: var(--sans);
+  line-height: 145%;
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --text: #9ca3af;
+  --text-h: #f3f4f6;
+  --bg: #16171d;
+  --border: #2e303a;
+  --code-bg: #1f2028;
+  --accent: #c084fc;
+  --accent-bg: rgba(192, 132, 252, 0.15);
+  --accent-border: rgba(192, 132, 252, 0.5);
+  --social-bg: rgba(47, 48, 58, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  
+  --surface-1: #1f2028;
+  --surface-2: #2e303a;
+  --surface-hover: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] #social .button-icon {
+  filter: invert(1) brightness(2);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  height: 100svh;
+  overflow: hidden;
+  font-size: var(--fs)
+}
+
+#root {
+  width: 100svw;
+  height: 100svh;
+  max-height: 100svh;
+  overflow: hidden;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  border-inline: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-layout {
+  flex: 1;
+  min-height: 0;
+}
+
+.empty-app-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-1);
+  color: var(--text);
+}
+
+.empty-app-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+  text-align: center;
+  color: var(--text);
+  font-size: var(--fs-md);
+  padding: var(--spacing-10);
+  border: 1px dashed var(--border);
+  border-radius: var(--spacing-3);
+  background: var(--surface-2);
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+}
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+
+.glassmorphism {
+  background-color: rgb(from var(--bg) r g b / var(--g-bg-opacity));
+  backdrop-filter: blur(var(--g-blur));
+}

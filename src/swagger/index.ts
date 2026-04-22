@@ -1,8 +1,55 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router, type RouterRegistryLike } from "../router";
-import { Descriptor, type DescriptorLike } from "../descriptor";
+import { Descriptor, type DescriptorLike, type DescritorConfigurations } from "../descriptor";
 import type { Context } from "hono";
-import type { Bindings } from "../types/router";
+import type { Bindings, Variables } from "../types/router";
+
+export type SecuritySchemeType = "apiKey" | "http" | "oauth2" | "openIdConnect";
+
+export interface SecuritySchemeObject {
+  type: SecuritySchemeType;
+  description?: string;
+  name?: string;
+  in?: "query" | "header" | "cookie";
+  scheme?: string; // e.g. "bearer"
+  bearerFormat?: string; // e.g. "JWT"
+  flows?: Record<string, any>;
+  openIdConnectUrl?: string;
+}
+
+export interface SwaggerAuth {
+  basic?: boolean | SecuritySchemeObject;
+  bearer?: boolean | SecuritySchemeObject;
+}
+
+export interface ApiOperationOptions<Route extends string = string> extends DescritorConfigurations<Route> {
+  description?: string;
+  parameters?: Array<{
+    name: string;
+    in: "query" | "header" | "path" | "cookie";
+    description?: string;
+    required?: boolean;
+    deprecated?: boolean;
+    schema?: any;
+  }>;
+  requestBody?: {
+    description?: string;
+    required?: boolean;
+    content: Record<string, any>;
+  };
+  security?: Array<Record<string, string[]>>;
+  deprecated?: boolean;
+  operationId?: string;
+}
+
+export function ApiOperation<
+  Data = unknown,
+  Route extends string = string,
+  B extends Bindings = Bindings,
+  V extends Variables = Variables
+>(options: ApiOperationOptions<Route>) {
+  return Descriptor<Data, Route, B, V>(options as any);
+}
 
 export interface SwaggerConfig {
   openapi?: string;
@@ -11,6 +58,7 @@ export interface SwaggerConfig {
     version: string;
     description?: string;
   };
+  auth?: SwaggerAuth;
 }
 
 export class SwaggerRegistry implements RouterRegistryLike {
@@ -32,13 +80,21 @@ export class SwaggerRegistry implements RouterRegistryLike {
     }
 
     const lowerMethod = method.toLowerCase();
-    const config = desc.descriptor as { url?: string; title?: string; summary?: string; tags?: string[]; status?: number };
+    const config = desc.descriptor as ApiOperationOptions<string>;
     
-    this.paths[openApiPath][lowerMethod] = {
-      summary: config.title || config.summary || `${method} ${path}`,
-      description: config.summary,
-      tags: config.tags || ["Default"],
-      responses: {
+    // Auto map responses
+    let compiledResponses = config.responses || {};
+    
+    // Auto map security blocks
+    const security: Record<string, any>[] = config.security || [];
+    if (!config.security) {
+      if (config.basic) security.push({ basicAuth: [] });
+      if (config.bearer) security.push({ bearerAuth: [] });
+    }
+
+    // Ensure there is at least one default response if empty
+    if (Object.keys(compiledResponses).length === 0) {
+      compiledResponses = {
         [config.status?.toString() || "200"]: {
           description: "Successful response",
           content: {
@@ -56,18 +112,56 @@ export class SwaggerRegistry implements RouterRegistryLike {
             }
           }
         }
-      }
+      };
+    }
+
+    this.paths[openApiPath][lowerMethod] = {
+      summary: config.title || config.summary || `${method} ${path}`,
+      description: config.description || config.summary,
+      tags: config.tags || ["Default"],
+      responses: compiledResponses,
+      ...(config.parameters ? { parameters: config.parameters } : {}),
+      ...(config.requestBody ? { requestBody: config.requestBody } : {}),
+      ...(config.operationId ? { operationId: config.operationId } : {}),
+      ...(config.deprecated !== undefined ? { deprecated: config.deprecated } : {}),
+      ...(security.length > 0 ? { security } : {}),
+      ...(config.examples ? { "x-examples": config.examples } : {}) // Store examples at root using OpenAPI extension property
     };
   }
 
   getOpenApiJson() {
+    const securitySchemes: Record<string, any> = {};
+    const globalSecurity: Record<string, any>[] = [];
+
+    if (this.config.auth?.bearer) {
+      const defaultBearer = { type: "http", scheme: "bearer", bearerFormat: "JWT" };
+      const bearerOptions = typeof this.config.auth.bearer === "object" 
+        ? { ...defaultBearer, ...this.config.auth.bearer }
+        : defaultBearer;
+        
+      securitySchemes["bearerAuth"] = bearerOptions;
+      globalSecurity.push({ bearerAuth: [] });
+    }
+
+    if (this.config.auth?.basic) {
+      const defaultBasic = { type: "http", scheme: "basic" };
+      const basicOptions = typeof this.config.auth.basic === "object"
+        ? { ...defaultBasic, ...this.config.auth.basic }
+        : defaultBasic;
+
+      securitySchemes["basicAuth"] = basicOptions;
+      globalSecurity.push({ basicAuth: [] });
+    }
+
     return {
       openapi: this.config.openapi,
       info: this.config.info,
       paths: this.paths,
       components: {
-        schemas: {}
-      }
+        schemas: {},
+        ...(Object.keys(securitySchemes).length > 0 ? { securitySchemes } : {})
+      },
+      ...(globalSecurity.length > 0 ? { security: globalSecurity } : {})
     };
   }
 }

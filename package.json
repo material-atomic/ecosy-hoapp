@@ -27,6 +27,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
+    "prebuild": "node scripts/pack-ui.js",
     "build": "eslint . --fix && rollup -c",
     "prepublishOnly": "yarn clean && yarn test && yarn build",
     "lint": "eslint . --fix",
@@ -50,7 +51,8 @@
       "hoapp-route-response-data": "$this://agents/skills/hoapp-route-response-data/SKILL.md",
       "hoapp-middleware": "$this://agents/skills/hoapp-middleware/SKILL.md",
       "hoapp-auth": "$this://agents/skills/hoapp-auth/SKILL.md",
-      "hoapp-create-descriptor": "$this://agents/skills/hoapp-create-descriptor/SKILL.md"
+      "hoapp-create-descriptor": "$this://agents/skills/hoapp-create-descriptor/SKILL.md",
+      "hoapp-api-operation": "$this://agents/skills/hoapp-api-operation/SKILL.md"
     },
     "workflows": [
       "prompts.hoapp",
@@ -61,7 +63,8 @@
       "skills.hoapp-route-response-data",
       "skills.hoapp-middleware",
       "skills.hoapp-auth",
-      "skills.hoapp-create-descriptor"
+      "skills.hoapp-create-descriptor",
+      "skills.hoapp-api-operation"
     ],
     "examples": {
       "project": {

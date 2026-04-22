@@ -1,0 +1,33 @@
+.collapsible {
+  display: flex;
+  flex-direction: column;
+}
+
+.trigger {
+  background: transparent;
+  border: none !important; /* override border */
+  cursor: pointer;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  margin: 0;
+  display: flex;
+  font-family: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+
+  &.open {
+    grid-template-rows: 1fr;
+  }
+}
+
+.contentInner {
+  min-height: 0;
+  overflow: hidden;
+}

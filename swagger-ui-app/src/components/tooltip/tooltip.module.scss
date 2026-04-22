@@ -1,0 +1,26 @@
+.wrapper {
+  display: inline-block;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 99999;
+  pointer-events: none;
+  background-color: var(--surface-2);
+  color: var(--text-h);
+  padding: var(--spacing) var(--spacing-2);
+  border-radius: var(--spacing-1);
+  font-size: var(--fs-xs, 12px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+
+  /* Use a pseudo-element if you want a little arrow (omitted for clean look or can be added) */
+
+  &.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

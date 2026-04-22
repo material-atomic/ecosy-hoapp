@@ -1,0 +1,58 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  border-radius: var(--spacing-1);
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &.sm {
+    height: var(--spacing-7);
+    padding: 0 var(--spacing-3);
+    font-size: 13px;
+    border-radius: var(--spacing);
+  }
+
+  &.md {
+    height: var(--spacing-8);
+    padding: 0 var(--spacing-4);
+    font-size: 14px;
+    border-radius: var(--spacing);
+  }
+
+  &.lg {
+    height: var(--spacing-10);
+    padding: 0 var(--spacing-5);
+    font-size: 15px;
+    border-radius: var(--spacing-2);
+  }
+
+  &.ghost {
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    color: inherit;
+
+    &:hover {
+      background: var(--surface-hover);
+    }
+  }
+
+  &.solid {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    color: inherit;
+
+    &:hover {
+      background: var(--surface-hover);
+    }
+    
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+}

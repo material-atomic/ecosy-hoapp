@@ -1,0 +1,99 @@
+/* Dropdown layout container */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Default trigger button styling if not using asChild */
+.trigger {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menu popover styles */
+.menu {
+  position: absolute;
+  top: calc(100% + 8px); /* 8px gap */
+  min-width: 140px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 4px;
+  z-index: 50;
+  
+  /* Entrance animation */
+  animation: dropdown-fade-in 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top;
+
+  &.align-left {
+    left: 0;
+  }
+  
+  &.align-right {
+    right: 0;
+  }
+
+  &.align-center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Menu items */
+.item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing) var(--spacing-3);
+  border-radius: 4px;
+  font-size: var(--fs-sm);
+  letter-spacing: 2%;
+  color: var(--text-h);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.1s ease, color 0.1s ease;
+  
+  &:hover, &:focus-visible {
+    background: var(--surface-hover);
+    outline: none;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+/* Keyframes for smooth entrance */
+@keyframes dropdown-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Ensure align-center transform isn't overridden by animation when it lands */
+.menu.align-center {
+  animation: dropdown-fade-in-center 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dropdown-fade-in-center {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}

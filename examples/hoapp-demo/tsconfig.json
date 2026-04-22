@@ -1,5 +1,4 @@
 {
-  "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["ESNext"],
@@ -12,7 +11,12 @@
     "verbatimModuleSyntax": false,
     "declaration": false,
     "declarationMap": false,
-    "sourceMap": false
+    "sourceMap": false,
+    "baseUrl": ".",
+    "paths": {
+      "@ecosy/hoapp": ["../../src/index.ts"],
+      "@ecosy/hoapp/*": ["../../src/*"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
