@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
@@ -16,6 +17,9 @@ try {
 
   const htmlPath = path.resolve(__dirname, '../swagger-ui-app/dist/index.html');
   let htmlContent = fs.readFileSync(htmlPath, 'utf8');
+
+  // Escape backslashes, backticks, and dollar signs from the minified HTML
+  htmlContent = htmlContent.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
 
   // We need to inject the dynamic options configuration BEFORE the script executes!
   // The React app expects window.API_JSON_URL.

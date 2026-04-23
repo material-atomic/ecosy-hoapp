@@ -38,7 +38,7 @@ export function JsonEditor({ value, onChange, className = '', style, placeholder
         return `<span class="${cls}">${match}</span>`;
       });
       return html;
-    } catch (err) {
+    } catch {
       // Fallback
       return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }

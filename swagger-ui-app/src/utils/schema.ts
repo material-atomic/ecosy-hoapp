@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 function resolveRef(ref: string, openApi: any): any {
   if (!ref.startsWith('#/')) return null;
   const path = ref.split('/').slice(1);
@@ -24,7 +25,7 @@ export function generateSampleFromSchema(schema: any, openApi: any = null, seen 
   if (schema.example !== undefined) return schema.example;
 
   if (schema.allOf) {
-    let result = {};
+    const result = {};
     for (const sub of schema.allOf) {
        const subResult = generateSampleFromSchema(sub, openApi, seen);
        if (subResult && typeof subResult === 'object') {

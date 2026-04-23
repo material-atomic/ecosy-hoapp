@@ -19,7 +19,6 @@ import { useState, useEffect } from "react";
 import { useCurlBuilder } from "@/hooks/curl";
 import { useExecuteRequest } from "@/hooks/execute";
 import { useSelector, useDispatch } from "@/store";
-import { authActions } from "@/store/auth";
 import { responsesActions } from "@/store/responses";
 import { extractExampleFromContent } from "@/utils/schema";
 
@@ -121,8 +120,8 @@ export function RequestContent({ activeItem, selectedUrl }: RequestContentProps)
   const pathParams = pathParamsMatch ? pathParamsMatch.map(p => p.slice(1, -1)) : [];
 
   let curlCommand = "";
-  let currentHeaders: Record<string, string> = {};
-  let currentQueryParams: Record<string, string> = {};
+  const currentHeaders: Record<string, string> = {};
+  const currentQueryParams: Record<string, string> = {};
 
   if (pathItem && activeItem) {
     if (hasBearerAuth) {
@@ -477,7 +476,7 @@ export function RequestContent({ activeItem, selectedUrl }: RequestContentProps)
                                 <AuthBasicForm 
                                   username={customBasic.username}
                                   password={customBasic.password}
-                                  onChange={(data) => setCustomBasic(data)}
+                                  onChange={(data) => setCustomBasic(prev => ({ username: data.username ?? prev.username, password: data.password ?? prev.password }))}
                                 />
                               )}
                             </>

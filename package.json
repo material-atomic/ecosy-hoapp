@@ -27,7 +27,6 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "prebuild": "node scripts/pack-ui.js",
     "build": "eslint . --fix && rollup -c",
     "prepublishOnly": "yarn clean && yarn test && yarn build",
     "lint": "eslint . --fix",
