@@ -5,6 +5,17 @@ All notable changes to the `@ecosy/hoapp` package will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - Handler Composition Type Fixes
+
+A focused patch that unblocks composing typed handlers into descriptors when the worker's environment differs from the framework's default `Bindings`. Type plumbing only — no runtime behavior change.
+
+### 🐛 Bug Fixes
+- **`ctx.req.valid()` no longer resolves to `never`**: `RouteContext` now passes `Input = any` through to Hono's `Context`. Previously the default `{}` made `keyof Input["in"]` collapse to `never`, blocking any call to `ctx.req.valid("query" | "json" | …)` inside hoapp handlers. Callers still cast the return when full type-safety is required.
+- **`Descriptor.use(...)` widens `B` from handlers**: The descriptor's `Bindings` generic now infers from the handlers passed into `.use()` instead of staying fixed at construction time. `Descriptor({...}).use(handler<Env>)` now yields `DescriptorLike<..., Env>` rather than collapsing back to the default `Bindings`, so downstream `Router.get(desc)` correctly picks up the worker's env type.
+
+### ⚙️ API Surface
+- **`DescriptorLike.handle()` is now part of the public interface**: The class already implemented `handle()` (returns a single Hono-compatible handler that runs the full middleware + handler chain), but the interface didn't expose it. Mounting a descriptor on a raw Hono app via `app.get(desc.descriptor.url, desc.handle())` is now type-safe.
+
 ## [0.2.0] - Generic Router and Swagger Binding Propagation
 
 This release significantly hardens the rigid type-safety bounds between HoApp modules by ensuring deeply nested generics correctly trickle down through parent instances, effectively bypassing strict `Contravariance` typescript constraints.

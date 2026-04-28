@@ -42,7 +42,21 @@ export interface DescriptorLike<
   V extends Variables = Variables
 > {
   descriptor: Freezable<DescritorConfigurations<Route>>;
-  use(...handles: RouteHandles<Data, Route, B, V>): DescriptorLike<Data, Route, B, V>;
+  /**
+   * Append middlewares + handler. The B/V generics widen to whatever the
+   * handlers declare — so `Descriptor({...}).use(handler<Env>)` yields
+   * `DescriptorLike<..., Env>` instead of staying on the default Bindings.
+   * This lets `Router.get(desc)` infer the worker's env type from the handler.
+   */
+  use<B2 extends Bindings = B, V2 extends Variables = V>(
+    ...handles: RouteHandles<Data, Route, B2, V2>
+  ): DescriptorLike<Data, Route, B2, V2>;
+  /**
+   * Returns a single Hono-compatible handler that runs the full middleware
+   * chain + final handler. Use it to register a descriptor on a raw Hono app
+   * directly, e.g. `app.get(desc.descriptor.url, desc.handle())`.
+   */
+  handle(): Handler<Data, Route, B, V>;
   forRoute(): RouteHandles<Data, Route, B, V>;
   url<R extends string = string>(url: R): DescriptorLike<Data, R, B, V>;
   refine<Extended extends LiteralObject>(config: Partial<DescritorConfigurations<Route>> & Extended): DescriptorLike<Data, Route, B, V>;
@@ -58,9 +72,11 @@ export function Descriptor<
     static readonly descriptor = freeze(descriptor);
     static handles = [] as unknown as RouteHandles<Data, Route, B, V>;
 
-    static use(...handles: RouteHandles<Data, Route, B, V>) {
+    static use<B2 extends Bindings = B, V2 extends Variables = V>(
+      ...handles: RouteHandles<Data, Route, B2, V2>
+    ) {
       RouteDescriptor.handles = [...RouteDescriptor.handles, ...handles] as unknown as RouteHandles<Data, Route, B, V>;
-      return RouteDescriptor;
+      return RouteDescriptor as unknown as DescriptorLike<Data, Route, B2, V2>;
     }
 
     static handle() {

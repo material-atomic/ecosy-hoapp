@@ -1,6 +1,6 @@
 {
   "name": "@ecosy/hoapp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A high-performance Edge Cloud Router designed to wrap Hono with strict Type-Safe Descriptors, Zero-Config OpenAPI, and Topological Isolation.",
   "keywords": [
     "hono",
