@@ -13,7 +13,7 @@ export interface RouterBinding<B extends Bindings = Bindings, V extends Variable
 // `Input = any` so `ctx.req.valid("query" | "json" | ...)` is callable in
 // handlers. Hono's default `{}` makes the target type `never`, blocking the
 // call entirely. Caller casts the return when typed access is needed.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export type RouteContext<
   Route extends string = string,
   B extends Bindings = Bindings,

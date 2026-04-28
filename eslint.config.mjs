@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export default [
   {
-    ignores: ["dist/**", "node_modules/**", "**/.wrangler/**", "examples/**", "agents/**", "skills/**"]
+    ignores: ["dist/**", "node_modules/**", "**/.wrangler/**", "examples/**", "agents/**", "skills/**", "swagger-ui-app/**"]
   },
   eslint.configs.recommended,
   {
